@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useGallery } from '../hooks/useSupabase'
 import { X, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react'
 
@@ -6,6 +6,8 @@ const Gallery = () => {
   const { gallery, loading } = useGallery()
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentImage, setCurrentImage] = useState(0)
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const imagesPerSlide = 6
 
   const defaultImages = [
     {
@@ -37,6 +39,23 @@ const Gallery = () => {
   const images = gallery.length > 0 
     ? gallery.map(item => ({ url: item.url_foto, caption: item.keterangan || '' }))
     : defaultImages
+
+  useEffect(() => {
+    if (images.length > imagesPerSlide) {
+      const interval = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % Math.ceil(images.length / imagesPerSlide))
+      }, 4000)
+      return () => clearInterval(interval)
+    }
+  }, [images.length])
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % Math.ceil(images.length / imagesPerSlide))
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => prev === 0 ? Math.ceil(images.length / imagesPerSlide) - 1 : prev - 1)
+  }
 
   const openLightbox = (index: number) => {
     setCurrentImage(index)
@@ -85,86 +104,78 @@ const Gallery = () => {
             <p className="text-gray-600">Belum ada foto yang diupload</p>
           </div>
         ) : (
-          <>
-            {/* Mobile Slider (2 rows, 3 photos each) */}
-            <div className="block sm:hidden">
-              <div className="space-y-4">
-                {/* First Row */}
-                <div className="flex space-x-3 overflow-x-auto pb-2">
-                  {images.slice(0, 6).map((image, index) => (
-                    <div
-                      key={index}
-                      className="flex-shrink-0 w-28 cursor-pointer"
-                      onClick={() => openLightbox(index)}
-                    >
-                      <div className="relative h-20 overflow-hidden rounded-lg shadow-md">
-                        <img
-                          src={image.url}
-                          alt={image.caption}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      {image.caption && (
-                        <p className="text-xs text-gray-600 mt-1 truncate">{image.caption}</p>
-                      )}
+          <div className="relative">
+            <div className="overflow-hidden">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {Array.from({ length: Math.ceil(images.length / imagesPerSlide) }).map((_, slideIndex) => (
+                  <div key={slideIndex} className="w-full flex-shrink-0">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+                      {images
+                        .slice(slideIndex * imagesPerSlide, (slideIndex + 1) * imagesPerSlide)
+                        .map((image, index) => (
+                          <div
+                            key={slideIndex * imagesPerSlide + index}
+                            className="group cursor-pointer overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                            onClick={() => openLightbox(slideIndex * imagesPerSlide + index)}
+                          >
+                            <div className="relative h-32 sm:h-40 lg:h-48 overflow-hidden">
+                              <img
+                                src={image.url}
+                                alt={image.caption}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                              />
+                              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                  <ImageIcon className="text-white" size={24} />
+                                </div>
+                              </div>
+                            </div>
+                            {image.caption && (
+                              <div className="p-2 sm:p-3">
+                                <p className="text-xs text-gray-600 truncate">{image.caption}</p>
+                              </div>
+                            )}
+                          </div>
+                        ))}
                     </div>
-                  ))}
-                </div>
-                {/* Second Row */}
-                {images.length > 6 && (
-                  <div className="flex space-x-3 overflow-x-auto pb-2">
-                    {images.slice(6, 12).map((image, index) => (
-                      <div
-                        key={index + 6}
-                        className="flex-shrink-0 w-28 cursor-pointer"
-                        onClick={() => openLightbox(index + 6)}
-                      >
-                        <div className="relative h-20 overflow-hidden rounded-lg shadow-md">
-                          <img
-                            src={image.url}
-                            alt={image.caption}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        {image.caption && (
-                          <p className="text-xs text-gray-600 mt-1 truncate">{image.caption}</p>
-                        )}
-                      </div>
-                    ))}
                   </div>
-                )}
+                ))}
               </div>
             </div>
 
-            {/* Desktop Grid */}
-            <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-              {images.map((image, index) => (
-                <div
-                  key={index}
-                  className="group cursor-pointer overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                  onClick={() => openLightbox(index)}
+            {images.length > imagesPerSlide && (
+              <>
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-0 sm:-left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 z-10"
                 >
-                  <div className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
-                    <img
-                      src={image.url}
-                      alt={image.caption}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  <ChevronLeft className="text-green-600" size={20} />
+                </button>
+                
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-0 sm:-right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 z-10"
+                >
+                  <ChevronRight className="text-green-600" size={20} />
+                </button>
+
+                <div className="flex justify-center mt-6 space-x-2">
+                  {Array.from({ length: Math.ceil(images.length / imagesPerSlide) }).map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-200 ${
+                        index === currentSlide ? 'bg-green-600' : 'bg-gray-300'
+                      }`}
                     />
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <ImageIcon className="text-white" size={32} />
-                      </div>
-                    </div>
-                  </div>
-                  {image.caption && (
-                    <div className="p-3 sm:p-4">
-                      <p className="text-xs sm:text-sm text-gray-600">{image.caption}</p>
-                    </div>
-                  )}
+                  ))}
                 </div>
-              ))}
-            </div>
-          </>
+              </>
+            )}
+          </div>
         )}
       </div>
 
