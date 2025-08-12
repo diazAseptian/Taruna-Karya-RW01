@@ -25,7 +25,7 @@ const About = () => {
     {
       name: 'Tirta Diansyah Septian',
       position: 'Bendahara',
-      image: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop'
+      image: '/img/Bendahara.jpeg'
     }
   ]
 
