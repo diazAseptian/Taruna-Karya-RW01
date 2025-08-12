@@ -36,9 +36,9 @@ const Navbar = () => {
               <img
                 src="/img/Logo.png"
                 alt="Logo Taruna Karya"
-                className="w-10 h-10 rounded-full"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
               />
-              <span className="ml-3 text-xl font-bold text-green-800">Taruna Karya</span>
+              <span className="ml-2 sm:ml-3 text-lg sm:text-xl font-bold text-green-800">Taruna Karya</span>
             </div>
           </div>
 
@@ -56,10 +56,10 @@ const Navbar = () => {
               ))}
               <button
                 onClick={() => navigate('/admin')}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center gap-2"
+                className="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-200 flex items-center gap-1 sm:gap-2"
               >
-                <Shield size={16} />
-                Admin
+                <Shield size={14} />
+                <span className="hidden sm:inline">Admin</span>
               </button>
             </div>
           </div>
@@ -68,9 +68,9 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-green-800 hover:text-blue-600 p-2"
+              className="text-green-800 hover:text-blue-600 p-1 sm:p-2"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
@@ -83,7 +83,7 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-green-800 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+                  className="text-green-800 hover:text-blue-600 block px-3 py-2 rounded-md text-sm sm:text-base font-medium"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}

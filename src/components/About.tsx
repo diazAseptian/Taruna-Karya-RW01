@@ -32,22 +32,22 @@ const About = () => {
   return (
     <section id="tentang" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Tentang Kami</h2>
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">Tentang Kami</h2>
           <div className="w-24 h-1 bg-green-600 mx-auto"></div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12 sm:mb-16">
           <div>
-            <div className="flex items-center justify-center mb-8">
+            <div className="flex items-center justify-center mb-6 sm:mb-8">
               <img
                 src="/img/Logo.png"
                 alt="Logo Taruna Karya"
-                className="w-32 h-32 rounded-full shadow-lg"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full shadow-lg"
               />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Sejarah Singkat</h3>
-            <p className="text-gray-600 leading-relaxed">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 text-center lg:text-left">Sejarah Singkat</h3>
+            <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center lg:text-left">
               Taruna Karya Kampung Ciperang didirikan pada tahun 2020 dengan semangat gotong royong 
               untuk memajukan kampung. Berawal dari sekelompok pemuda yang peduli terhadap 
               lingkungan sekitar, organisasi ini terus berkembang menjadi wadah 
@@ -55,16 +55,16 @@ const About = () => {
             </p>
           </div>
 
-          <div className="space-y-8">
-            <div className="flex items-start space-x-4">
+          <div className="space-y-6 sm:space-y-8 mt-8 lg:mt-0">
+            <div className="flex items-start space-x-3 sm:space-x-4">
               <div className="flex-shrink-0">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Eye className="text-green-600" size={24} />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <Eye className="text-green-600" size={20} />
                 </div>
               </div>
               <div>
-                <h4 className="text-xl font-semibold text-gray-900 mb-2">Visi</h4>
-                <p className="text-gray-600">
+                <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Visi</h4>
+                <p className="text-sm sm:text-base text-gray-600">
                   Menjadi organisasi pemuda terdepan dalam membangun kampung Ciperang 
                   yang maju, sejahtera, dan berkarakter.
                 </p>
@@ -91,19 +91,19 @@ const About = () => {
         </div>
 
         <div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Struktur Kepengurusan</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">Struktur Kepengurusan</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
             {coreMembers.map((member, index) => (
               <div key={index} className="text-center group">
-                <div className="relative mb-4">
+                <div className="relative mb-3 sm:mb-4">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-32 h-32 rounded-full mx-auto object-cover shadow-lg group-hover:scale-105 transition-transform duration-200"
+                    className="w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full mx-auto object-cover shadow-lg group-hover:scale-105 transition-transform duration-200"
                   />
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-1">{member.name}</h4>
-                <p className="text-green-600 font-medium">{member.position}</p>
+                <h4 className="text-sm sm:text-base lg:text-lg font-semibold text-gray-900 mb-1">{member.name}</h4>
+                <p className="text-xs sm:text-sm lg:text-base text-green-600 font-medium">{member.position}</p>
               </div>
             ))}
           </div>
