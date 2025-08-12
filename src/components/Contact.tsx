@@ -11,7 +11,7 @@ const Contact = () => {
 
   const contactInfo = {
     address: 'Kampung Ciperang, Desa Sukarame, Kecamatan Leles, Kabupaten Garut, Jawa Barat 44152',
-    phone: '+62 812-1761-7962',
+    phone: '+62 821-1761-7962',
     email: 'tarunakarya.ciperang@gmail.com',
     whatsapp: '6281217617962',
     instagram: '@tarunakarya_ciperang'
