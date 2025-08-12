@@ -8,14 +8,7 @@ const Articles = () => {
   const [selectedArticle, setSelectedArticle] = useState<any>(null)
   const itemsPerSlide = 3
 
-  useEffect(() => {
-    if (articles.length > itemsPerSlide) {
-      const interval = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % Math.ceil(articles.length / itemsPerSlide))
-      }, 5000)
-      return () => clearInterval(interval)
-    }
-  }, [articles.length])
+
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % Math.ceil(articles.length / itemsPerSlide))
@@ -61,6 +54,44 @@ const Articles = () => {
           <div className="text-center py-16">
             <FileText className="mx-auto text-gray-400 mb-4" size={48} />
             <p className="text-gray-600">Belum ada artikel yang dipublikasikan</p>
+          </div>
+        ) : articles.length <= 3 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            {articles.map((article) => (
+              <div key={article.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                {article.gambar && (
+                  <div className="h-40 sm:h-48 overflow-hidden">
+                    <img
+                      src={article.gambar}
+                      alt={article.judul}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+                
+                <div className="p-4 sm:p-6">
+                  <div className="flex items-center text-xs sm:text-sm text-gray-500 mb-3">
+                    <Calendar size={14} className="mr-2" />
+                    <span>{new Date(article.tanggal).toLocaleDateString('id-ID')}</span>
+                  </div>
+                  
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                    {article.judul}
+                  </h3>
+                  
+                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 line-clamp-3">
+                    {article.isi}
+                  </p>
+                  
+                  <button 
+                    onClick={() => handleReadMore(article)}
+                    className="text-sm sm:text-base text-green-600 font-semibold hover:text-green-700 transition-colors duration-200"
+                  >
+                    Baca Selengkapnya →
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <div className="relative">
@@ -115,35 +146,31 @@ const Articles = () => {
               </div>
             </div>
 
-            {articles.length > itemsPerSlide && (
-              <>
-                <button
-                  onClick={prevSlide}
-                  className="absolute left-0 sm:-left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1.5 sm:p-2 shadow-lg hover:shadow-xl transition-all duration-200 z-10"
-                >
-                  <ChevronLeft className="text-green-600" size={20} />
-                </button>
-                
-                <button
-                  onClick={nextSlide}
-                  className="absolute right-0 sm:-right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1.5 sm:p-2 shadow-lg hover:shadow-xl transition-all duration-200 z-10"
-                >
-                  <ChevronRight className="text-green-600" size={20} />
-                </button>
+            <button
+              onClick={prevSlide}
+              className="absolute left-0 sm:-left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1.5 sm:p-2 shadow-lg hover:shadow-xl transition-all duration-200 z-10"
+            >
+              <ChevronLeft className="text-green-600" size={20} />
+            </button>
+            
+            <button
+              onClick={nextSlide}
+              className="absolute right-0 sm:-right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1.5 sm:p-2 shadow-lg hover:shadow-xl transition-all duration-200 z-10"
+            >
+              <ChevronRight className="text-green-600" size={20} />
+            </button>
 
-                <div className="flex justify-center mt-6 sm:mt-8 space-x-2">
-                  {Array.from({ length: Math.ceil(articles.length / itemsPerSlide) }).map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentSlide(index)}
-                      className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-200 ${
-                        index === currentSlide ? 'bg-green-600' : 'bg-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
+            <div className="flex justify-center mt-6 sm:mt-8 space-x-2">
+              {Array.from({ length: Math.ceil(articles.length / itemsPerSlide) }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-200 ${
+                    index === currentSlide ? 'bg-green-600' : 'bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>

@@ -40,14 +40,7 @@ const Gallery = () => {
     ? gallery.map(item => ({ url: item.url_foto, caption: item.keterangan || '' }))
     : defaultImages
 
-  useEffect(() => {
-    if (images.length > imagesPerSlide) {
-      const interval = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % Math.ceil(images.length / imagesPerSlide))
-      }, 4000)
-      return () => clearInterval(interval)
-    }
-  }, [images.length])
+
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % Math.ceil(images.length / imagesPerSlide))
